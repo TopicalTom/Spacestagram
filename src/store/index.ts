@@ -1,13 +1,13 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { 
     imagesReducer,
-    //likeReducer,
+    likeReducer,
     //authReducer 
 } from './reducers';
 
 const rootReducer = combineReducers({
     images: imagesReducer,
-    //likes: likeReducer,
+    likes: likeReducer,
     //auth: authReducer
 });
 
