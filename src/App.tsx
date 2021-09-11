@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import { imageSelector } from './store/reducers/imagesReducer';
+import { fetchImages } from './store/actions/imagesActions';
+import { useSelector, useDispatch } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const dispatch = useDispatch();
+    const { error, isLoading, data } = useSelector(imageSelector);
+
+    useEffect(() => {
+        dispatch(fetchImages());
+    }, [dispatch]);
+
+    if (isLoading) return <div>....loading</div>;
+    if (error) return <div>{error}</div>;
+
+    return (
+        <div>
+            <h1>Spacestagram</h1>
+            {data && data.map(image => {
+                const { title, date, url } = image;
+                return (
+                    <div key={date}>
+                        <h1>{title}</h1>
+                        <h3>{date}</h3>
+                        <img 
+                            src={url} 
+                            alt={title} 
+                        />
+                    </div>
+                )
+            })}
+        </div>
+    );
+};
 
 export default App;
