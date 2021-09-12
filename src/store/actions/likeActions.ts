@@ -1,9 +1,9 @@
-import axios from 'axios';
+//import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AppThunk } from '../store';
 import { 
-    setLike, 
-    setCount,
+    //setLike, 
+    //setCount,
     setUpdating,
 } from '../reducers/likeReducer';
 

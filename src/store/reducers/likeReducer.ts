@@ -17,18 +17,21 @@ const likeSlice = createSlice({
     name: 'likes',
     initialState,
     reducers: {
+        // Toggles Image Like based on user input
         setLike: (
             state, 
             { payload }: PayloadAction<boolean>
         ) => {
             state.isLiked = payload;
         },
+        // Displayes the total of users who liked image
         setCount: (
             state, 
             { payload }: PayloadAction<number>
         ) => {
             state.count = payload;
         },
+        // Enables UI changes to occur
         setUpdating: (
             state, 
             { payload }: PayloadAction<boolean>

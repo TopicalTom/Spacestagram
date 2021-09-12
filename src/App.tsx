@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { imageSelector } from './store/reducers/imagesReducer';
-import { fetchImages } from './store/actions/imagesActions';
+import { imageSelector, authSelector } from './store/reducers';
+import { fetchImages, login, logout } from './store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
     const dispatch = useDispatch();
     const { error, isLoading, data } = useSelector(imageSelector);
+    const { user } = useSelector(authSelector);
 
     useEffect(() => {
         dispatch(fetchImages());
@@ -17,6 +18,16 @@ const App = () => {
     return (
         <div>
             <h1>Spacestagram</h1>
+            {user
+                ?   <div>
+                        <h3>{user.displayName}</h3>
+                        <img src={user.photoURL?.toString()} />
+                        <button onClick={() => dispatch(logout())}>Logout</button>
+                    </div>
+                :   <>
+                        <button onClick={() => dispatch(login())}>Login</button>
+                    </>
+            }
             {data && data.map(image => {
                 const { title, date, url } = image;
                 return (
