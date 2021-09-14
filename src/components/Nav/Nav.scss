@@ -1,0 +1,36 @@
+.nav {
+    grid-area: navi;
+    position: fixed;
+    grid-template-areas: ". watermark actions .";
+    grid-template-columns: 1fr 600px 400px 1fr;
+    grid-template-rows: 56px;
+    display: grid;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    border-bottom: 0.5px solid #303030;
+    background-color: #090909;
+    z-index: 90;
+
+    &__watermark {
+        grid-area: watermark;
+        display: flex;
+        flex-direction: row;
+
+        & > h1 {
+            padding-left: 12px;
+        }
+    }
+
+    &__actions {
+        grid-area: actions;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        & > button:nth-last-child(0) {
+            margin-left: 16px;
+        }
+    }
+}

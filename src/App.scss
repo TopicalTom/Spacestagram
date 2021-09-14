@@ -1,0 +1,7 @@
+.App {
+    display: grid;
+    grid-template-areas:    ". navi navi navi ."
+                            ". feed . about .";
+    grid-template-rows: 56px 1fr;
+    grid-template-columns: 1fr 600px 48px 352px 1fr;          
+}

@@ -1,0 +1,11 @@
+.Feed {
+    display: flex;
+    grid-area: feed;
+    flex-direction: column;
+    height: 100%;
+    margin-top: 48px;
+
+    & > div {
+        margin-bottom: 24px;
+    }
+}

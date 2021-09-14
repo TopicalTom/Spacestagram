@@ -1,0 +1,54 @@
+@import "./partials/breakpoints";
+@import "./partials/mixins";
+
+html, 
+body {
+    margin: 0;
+    box-sizing: border-box;
+    background: #090909;
+}
+
+h1 {
+    font-size: 24px;
+    color: white;
+}
+
+h2 {
+    font-size: 24px;
+    color: white;
+
+}
+
+h3 {
+
+    color: white;
+
+}
+
+p {
+    font-size: 14px;
+    color: white;
+}
+
+span {
+    color: white;
+}
+
+a {
+    color: #3a3a3a;
+    list-style: none;
+    list-style-type: none;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    list-style: none;
+    list-style-type: none;
+    text-decoration: none;
+    margin: 0;
+    outline-color: #2997ff;
+}
