@@ -6,7 +6,7 @@ interface ImageSocialProps {
     isLiked: boolean
 };
 
-const ImageSocial = () => {
+const ImageSocial = ({ isLiked }: ImageSocialProps) => {
     const dispatch = useDispatch();
     const { user } = useSelector(authSelector);
     
@@ -18,7 +18,7 @@ const ImageSocial = () => {
                         <img src={user.photoURL} alt="User avatar" />
                     </div>
             }
-            <h4>Be the first like</h4>
+            <h4>{isLiked ? 'liked by you' : 'Be the first like'}</h4>
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import './App.scss';
 import { useEffect } from 'react';
 import { imageSelector } from './store/reducers';
-import { fetchImages } from './store/actions';
+import { fetchImages, fetchLikes } from './store/actions';
 import Feed from './components/Feed';
 import Nav from './components/Nav';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,6 +12,7 @@ const App = () => {
 
     useEffect(() => {
         dispatch(fetchImages());
+        dispatch(fetchLikes('cZroMhP8f5NEoHwCSHb8KA8JYPE3'));
     }, [dispatch]);
 
     if (isLoading) return <div>....loading</div>;

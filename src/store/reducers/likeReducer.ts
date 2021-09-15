@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 
 interface LikeState {
-    isUpdating: boolean;
-    isLiked: boolean;
+    isUpdating: boolean,
+    likes: string[],
     count: number;
 };
 
 const initialState: LikeState = {
     isUpdating: false,
-    isLiked: false,
+    likes: [],
     count: 0
 };
 
@@ -17,30 +17,38 @@ const likeSlice = createSlice({
     name: 'likes',
     initialState,
     reducers: {
-        // Toggles Image Like based on user input
-        setLike: (
-            state, 
-            { payload }: PayloadAction<boolean>
-        ) => {
-            state.isLiked = payload;
-        },
-        // Displayes the total of users who liked image
-        setCount: (
-            state, 
-            { payload }: PayloadAction<number>
-        ) => {
-            state.count = payload;
-        },
-        // Enables UI changes to occur
         setUpdating: (
             state, 
             { payload }: PayloadAction<boolean>
         ) => {
             state.isUpdating = payload;
         },
+        setLikes: (
+            state, 
+            { payload }: PayloadAction<string[]>
+        ) => {
+            state.likes = payload;
+        },
+        setLike: (
+            state, 
+            { payload }: PayloadAction<string>
+        ) => {
+            state.likes = [...state.likes, payload];
+        },
+        setUnlike: (
+            state, 
+            { payload }: PayloadAction<string>
+        ) => {
+            state.likes = [...state.likes.filter(id => id !== payload)];
+        },
+        setCount: (
+            state
+        ) => {
+            state.count = state.likes.length;
+        },
     },
 });
 
-export const { setLike, setCount, setUpdating } = likeSlice.actions;
+export const { setUpdating, setLikes, setLike, setUnlike, setCount } = likeSlice.actions;
 export const likeSelector = (state: RootState) => state.likes;
 export const likeReducer = likeSlice.reducer;

@@ -1,77 +1,58 @@
 import firebase from '../../firebase';
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc, arrayRemove, arrayUnion, FieldValue } from "firebase/firestore";
 import { Dispatch } from 'redux';
 import { AppThunk } from '../store';
 import { 
-    //setLike, 
-    //setCount,
-    setUpdating,
+    setLike,
+    setLikes, 
+    setUnlike,
+    setCount,
+    setUpdating
 } from '../reducers/likeReducer';
 
-// This will be reusable for determing status
-/*
-const determineLikeStatus = (id: string) => {
-    if (id) {
-        return true;
-    } else {
-        return false;
-    }
-}
-*/
-
 const firestore = getFirestore(firebase);
-/*
-export const fetchLikes = async (id: string) => {
-    try {
-        const docRef = doc(firestore, "users", id);
-        const docSnap = await getDoc(docRef);
-        if (!docSnap.exists()) { 
-            await createAccount(userID);
-            return {
-                ...currentUser,
-                likes: []
-            }
-        // Fetch details on who liked picture from Firebase
-        // Update count
-        // Toggle status based on if user has liked
-    } catch (err) {
-        console.log(err);
-        // Toast for unable to retrieve likes
-    }
-};
+
 export const fetchLikes = (id: string): AppThunk => async (dispatch: Dispatch) => {
     try {
-        dispatch(setUpdating(true));
+        if (!id) { return };
         const docRef = doc(firestore, "users", id);
         const docSnap = await getDoc(docRef);
-        if (!docSnap.exists()) { 
-            await createAccount(userID);
-            return {
-                ...currentUser,
-                likes: []
-            }
-        // Fetch details on who liked picture from Firebase
-        // Update count
-        // Toggle status based on if user has liked
+        if (docSnap.exists()) {
+            dispatch(setLikes(docSnap.data().likes));
+        }
     } catch (err) {
         console.log(err);
-        // Toast for unable to retrieve likes
-    } finally {
-        dispatch(setUpdating(false));
-    };
+        // Toast for unable to update like
+    }
 };
-*/
-export const toggleLike = (id: string): AppThunk => async (dispatch: Dispatch) => {
+
+const updateStoredLikes = async (id: string, action: FieldValue) => {
+    try {
+        const docRef = doc(firestore, "users", id);
+        await updateDoc(docRef, {
+            likes: action
+        });
+    } catch (err) {
+        console.log(err);
+        // Toast for unable to update like
+    }
+};
+
+export const toggleLike = (id: string, photoRef: string, isLiked: boolean): AppThunk => (dispatch: Dispatch) => {
     try {
         dispatch(setUpdating(true));
-        // Compare id to ids of liked images from the user
-        // Toggle status based on comparison
-        // Push updated status to user / image
-        // Update Count
+        if (!isLiked) {
+            dispatch(setLike(photoRef));
+            updateStoredLikes(id, arrayUnion(photoRef));
+        } else {
+            dispatch(setUnlike(photoRef));
+            updateStoredLikes(id, arrayRemove(photoRef));
+        }
     } catch (err) {
         console.log(err);
         // Toast for unable to update like
     } finally {
+        dispatch(setCount());
         dispatch(setUpdating(false));
     };
 };

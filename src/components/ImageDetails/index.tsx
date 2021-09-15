@@ -3,13 +3,13 @@ import Tag from '../Tag';
 import Like from '../Like';
 
 interface ImageDetailsProps {
+    isLiked: boolean,
     title: string,
     explanation: string,
     date: string
 };
 
-const ImageDetails = ({ title, explanation, date }: ImageDetailsProps) => {
-    
+const ImageDetails = ({ title, explanation, date, isLiked }: ImageDetailsProps) => {    
     return (
         <div className="image-details">
             <div className="image-details__content">
@@ -17,7 +17,10 @@ const ImageDetails = ({ title, explanation, date }: ImageDetailsProps) => {
                 <p>{explanation}</p>
                 <Tag date={date} />
             </div>
-            <Like />
+            <Like 
+                isLiked={isLiked}
+                photoRef={date}
+            />
         </div>
     );
 };
