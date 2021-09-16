@@ -1,14 +1,13 @@
 .like {
-    background-color: #090909;
-    border-color: #090909;
-    padding: 0px;
+    background-color: transparent;
+    padding: 5px 0px;
     height: 32px;
     width: 32px;
+    border: none;
     border-radius: 100%;
     
     &:hover {
         cursor: pointer;
-        background-color: #303030;
-        border-color: #303030;
+        background-color: #141414;
     }
 }

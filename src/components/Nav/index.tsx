@@ -2,7 +2,6 @@ import './Nav.scss';
 import { authSelector } from '../../store/reducers';
 import { 
     login, 
-    logout, 
 } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 

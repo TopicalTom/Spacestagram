@@ -23,7 +23,7 @@ const ImageCard = ({ date, title, url, explanation }: ImageProps) => {
     },[likes, date]);
     
     return (
-        <div className="image-card" key={date}>
+        <div className="image-card">
             <ImagePreview 
                 url={url} 
                 title={title} 

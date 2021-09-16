@@ -7,7 +7,6 @@ interface Image {
     title: string,
     date: string,
     explanation: string,
-    likes?: number
 };
 
 interface ImagesState {

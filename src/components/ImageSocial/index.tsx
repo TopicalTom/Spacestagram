@@ -1,24 +1,22 @@
 import './ImageSocial.scss';
 import { authSelector } from '../../store/reducers';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import Avatar from '../Avatar';
 
 interface ImageSocialProps {
     isLiked: boolean
 };
 
 const ImageSocial = ({ isLiked }: ImageSocialProps) => {
-    const dispatch = useDispatch();
     const { user } = useSelector(authSelector);
     
     return (
         <div className="image-social">
             {!user?.photoURL
                 ?   <div />
-                :   <div >
-                        <img src={user.photoURL} alt="User avatar" />
-                    </div>
+                :   <Avatar photoURL={user.photoURL} />
             }
-            <h4>{isLiked ? 'liked by you' : 'Be the first like'}</h4>
+            <span>{isLiked ? 'liked by you' : 'Be the first like'}</span>
         </div>
     );
 };

@@ -2,7 +2,7 @@ import './Avatar.scss';
 
 interface AvatarProps {
     photoURL?: string,
-    size: number
+    size?: number
 };
 
 const Avatar = ({ photoURL, size }: AvatarProps) => {
@@ -12,8 +12,8 @@ const Avatar = ({ photoURL, size }: AvatarProps) => {
             src={photoURL} 
             alt="User avatar"
             style={{
-                width: size, 
-                height: size
+                width: size ? size : 32, 
+                height: size ? size : 32
             }}
         />
     );
