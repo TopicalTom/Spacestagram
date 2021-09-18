@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AppThunk } from '../store';
+import 'react-toastify/dist/ReactToastify.css';
 import { 
     setLoading, 
     setFetchSuccess,
     setFetchError
 } from '../reducers/imagesReducer';
-
-const ROOT_URL = 'https://api.nasa.gov/planetary/apod?';
 
 interface Image {
     id: string,
@@ -17,9 +16,11 @@ interface Image {
     explanation: string,
 };
 
+const API_URL = 'https://api.nasa.gov/planetary/apod?';
+
 const fetchFromAPI = async () => {
     try {
-        const { data } = await axios.get(`${ROOT_URL}api_key=${process.env.REACT_APP_API_KEY}&count=10`);
+        const { data } = await axios.get(`${API_URL}api_key=${process.env.REACT_APP_API_KEY}&count=10`);
         let images = data;
         return images;
     } catch (err) {
@@ -50,27 +51,3 @@ export const fetchImages = (): AppThunk => async (dispatch: Dispatch) => {
         dispatch(setLoading(false));
     };
 };
-
-/*
-export const fetchImages = (currentImages?: Image[]): AppThunk => async (dispatch: Dispatch) => {
-    try {
-        dispatch(setLoading(true));
-        const images = fetchFromAPI();
-        const { data } = await axios.get(`${ROOT_URL}api_key=${process.env.REACT_APP_API_KEY}&count=10`);
-        let images = data;
-        if (currentImages) {
-            const newDataSet = [...currentImages, images]
-            console.log('Exists');
-            dispatch(setFetchSuccess(newDataSet));
-        } else {
-            console.log('Doesen');
-            dispatch(setFetchSuccess(images));
-        }
-    } catch (err) {
-        dispatch(setFetchError('There was an issue handling your request, please try again.'));
-    } finally {
-        dispatch(setLoading(false));
-    };
-};
-
-*/

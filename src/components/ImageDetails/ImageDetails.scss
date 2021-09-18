@@ -1,12 +1,29 @@
 .image-details {
     display: grid;
+    grid-template-areas:    'image-title image-action'
+                            'image-explanation .'
+                            'image-tags image-tags';
     justify-items: stretch;
     grid-template-columns: 1fr 32px;
     column-gap: 32px;
-    height: auto;
     padding: 24px;
     border-top: 1px solid #303030;
     border-bottom: 1px solid #303030;
+
+    &__title {
+        grid-area: image-title;
+        color: white;
+        font-size: 24;
+        margin: 0;
+        margin-bottom: 8px;
+    }
+
+    &__tags {
+        grid-area: image-tags;
+        display: flex;
+        flex-direction: row;
+
+    }
 
     &__content {
         width: 100%;

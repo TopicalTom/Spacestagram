@@ -1,7 +1,16 @@
 import firebase from '../../firebase';
-import { getFirestore, doc, getDoc, updateDoc, arrayRemove, arrayUnion, FieldValue } from "firebase/firestore";
 import { Dispatch } from 'redux';
 import { AppThunk } from '../store';
+import { toast } from 'react-toastify';
+import { 
+    getFirestore, 
+    doc, 
+    getDoc, 
+    updateDoc, 
+    arrayRemove, 
+    arrayUnion, 
+    FieldValue 
+} from "firebase/firestore";
 import { 
     setLike,
     setLikes, 
@@ -33,25 +42,31 @@ const updateStoredLikes = async (id: string, action: FieldValue) => {
             likes: action
         });
     } catch (err) {
-        console.log(err);
-        // Toast for unable to update like
+        console.log(err)
+        //toast(err.toString());
     }
 };
 
 export const toggleLike = (id: string, photoRef: string, isLiked: boolean): AppThunk => (dispatch: Dispatch) => {
     try {
+        // Manage liked photo in database based on current like status
         dispatch(setUpdating(true));
+        updateStoredLikes(id, !isLiked 
+            ?   arrayUnion(photoRef) 
+            :   arrayRemove(photoRef)
+        );
+    } catch (err) {
+        console.log(err)
+        //toast(err.toString());
+    } finally {
+        // Update UI based on database change
         if (!isLiked) {
             dispatch(setLike(photoRef));
-            updateStoredLikes(id, arrayUnion(photoRef));
+            toast('Photo saved to "liked" collection');
         } else {
             dispatch(setUnlike(photoRef));
-            updateStoredLikes(id, arrayRemove(photoRef));
+            toast('Photo removed from "liked" collection');
         }
-    } catch (err) {
-        console.log(err);
-        // Toast for unable to update like
-    } finally {
         dispatch(setCount());
         dispatch(setUpdating(false));
     };

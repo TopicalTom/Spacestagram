@@ -3,6 +3,7 @@ import { imageSelector } from '../../store/reducers';
 import { fetchNewImages } from '../../store/actions';
 import ImageCard from '../ImageCard';
 import { useSelector, useDispatch } from 'react-redux';
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface Image {
     id: string,
@@ -14,18 +15,18 @@ interface Image {
 
 const Feed = () => {
     const dispatch = useDispatch();
-    const { data } = useSelector(imageSelector);
+    const { data, isLoading } = useSelector(imageSelector);
 
     const loadMore = (data: Image[]) => {
         dispatch(fetchNewImages(data));
     };
     
     return (
-        <div className="Feed">
+        <div className="feed">
             {data && data.map(image => {
                 return <ImageCard {...image} key={image.date} />
             })}
-            <button onClick={() => loadMore(data)}>load more</button>
+            <button className="feed__loader" onClick={() => loadMore(data)}>{isLoading ? <ClipLoader color='#FFF' loading={true} size={24} />: 'See more feed content'}</button>
         </div>
     );
 };

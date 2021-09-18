@@ -1,0 +1,16 @@
+.container {
+    background-color: #141414; 
+    padding: 24px 24px 32px 24px; 
+    height: min-content;
+    border-radius: 8px;
+
+    &__title {
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        color: rgba(255,255,255,0.3);
+    }
+
+    & > p {
+        line-height: 21px;
+    }
+}

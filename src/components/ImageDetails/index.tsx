@@ -2,6 +2,7 @@ import './ImageDetails.scss';
 import Tag from '../Tag';
 import Like from '../Like';
 import { readableDate } from '../../helpers/readableDate';
+import Accordion from '../Accordion';
 
 interface ImageDetailsProps {
     isLiked: boolean,
@@ -15,9 +16,9 @@ const ImageDetails = ({ title, explanation, date, isLiked }: ImageDetailsProps) 
 
     return (
         <div className="image-details">
-            <div className="image-details__content">
-                <h2>{title}</h2>
-                <p>{explanation}</p>
+            <h2 className="image-details__title">{title}</h2>
+            <Accordion content={explanation} />
+            <div className="image-details__tags">
                 <Tag date={readable} />
             </div>
             <Like 

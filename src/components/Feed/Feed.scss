@@ -1,4 +1,4 @@
-.Feed {
+.feed {
     display: flex;
     grid-area: feed;
     flex-direction: column;
@@ -7,5 +7,19 @@
 
     & > div {
         margin-bottom: 24px;
+    }
+
+    &__loader {
+        background-color: transparent;
+        color: #FFF;
+        border: 1px solid #303030;
+        border-radius: 8px;
+        height: 44px;
+        
+
+        &:hover {
+            background-color: #141414;
+            cursor: pointer;
+        }
     }
 }
