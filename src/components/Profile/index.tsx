@@ -20,7 +20,6 @@ const Profile = ({ user }: ProfileProps) => {
         <>
             <div className="profile">
                 <Avatar photoURL={photoURL?.toString()} />
-                <span>{displayName?.split(" ")[0]}</span>
                 <ChevronDown color="#fff" size={12} />
             </div>
         </>

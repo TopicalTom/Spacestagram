@@ -1,24 +1,41 @@
 import './Nav.scss';
-import { authSelector } from '../../store/reducers';
-import { 
-    login, 
-} from '../../store/actions';
+import { authSelector, likeSelector } from '../../store/reducers';
+import { login } from '../../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
+import { NavLink } from "react-router-dom";
 
+// Assets
 import { Logo } from '../../assets/logo';
+
+// Components
 import Profile from '../Profile';
 import Button from '../Button';
 
 const Nav = () => {
     const dispatch = useDispatch();
     const { user } = useSelector(authSelector);
+    const { count } = useSelector(likeSelector);
     
     return (
-        <div className="nav">
+        <nav className="nav">
             <div className="nav__watermark">
                 <Logo />
                 <h1>Spacestagram</h1>
             </div>
+            <ul className="nav__router">
+                <NavLink 
+                    exact
+                    to="/"
+                    activeClassName="selected">
+                    Explore
+                </NavLink>
+                <NavLink 
+                    exact
+                    to="/likes"
+                    activeClassName="selected">
+                    Liked {count}
+                </NavLink>
+            </ul>
             <div className="nav__actions">
                 {user
                     ?   <Profile user={user} />
@@ -38,7 +55,7 @@ const Nav = () => {
                         </>
                 }
             </div>
-        </div>
+        </nav>
     );
 };
 

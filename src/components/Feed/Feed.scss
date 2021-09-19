@@ -3,7 +3,7 @@
     grid-area: feed;
     flex-direction: column;
     height: 100%;
-    margin-top: 48px;
+    padding-bottom: 48px;
 
     & > div {
         margin-bottom: 24px;
@@ -15,7 +15,6 @@
         border: 1px solid #303030;
         border-radius: 8px;
         height: 44px;
-        
 
         &:hover {
             background-color: #141414;

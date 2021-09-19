@@ -1,8 +1,8 @@
 import './Feed.scss';
-import { imageSelector } from '../../store/reducers';
-import { fetchNewImages } from '../../store/actions';
+//import { imageSelector } from '../../store/reducers';
+//import { fetchNewImages } from '../../store/actions';
 import ImageCard from '../ImageCard';
-import { useSelector, useDispatch } from 'react-redux';
+//import { useSelector, useDispatch } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
 
 interface Image {
@@ -13,20 +13,38 @@ interface Image {
     explanation: string,
 };
 
-const Feed = () => {
-    const dispatch = useDispatch();
-    const { data, isLoading } = useSelector(imageSelector);
+interface FeedProps {
+    data: Image[],
+    isLoading: boolean,
+    action: () => {}
+};
 
-    const loadMore = (data: Image[]) => {
-        dispatch(fetchNewImages(data));
-    };
+const Feed = ({ data, isLoading, action }: FeedProps) => {
+    //const dispatch = useDispatch();
+    //const { data, isLoading } = useSelector(imageSelector);
     
     return (
         <div className="feed">
             {data && data.map(image => {
-                return <ImageCard {...image} key={image.date} />
+                return (
+                    <ImageCard 
+                        {...image} 
+                        key={image.date} 
+                    />
+                )
             })}
-            <button className="feed__loader" onClick={() => loadMore(data)}>{isLoading ? <ClipLoader color='#FFF' loading={true} size={24} />: 'See more feed content'}</button>
+            <button 
+                className="feed__loader" 
+                onClick={() => action}>{
+                    isLoading 
+                        ?   <ClipLoader 
+                                color='#FFF' 
+                                loading={true} 
+                                size={24} 
+                            />
+                        :   'See more feed content'
+                }
+            </button>
         </div>
     );
 };

@@ -1,0 +1,8 @@
+.page {
+    display: grid;
+    grid-template-areas:    ". navi navi navi ."
+                            ". feed . sidebar .";
+    grid-template-rows: 56px 1fr;
+    row-gap: 48px;
+    grid-template-columns: 1fr 600px 48px 352px 1fr;  
+}

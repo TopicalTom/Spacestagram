@@ -5,10 +5,11 @@ import { RefreshCw } from 'react-feather';
 import { animateScroll as scroll } from 'react-scroll';
 
 interface SidebarProps {
-    title: string
+    title: string,
+    action?: () => {}
 }
 
-const Sidebar:FC<SidebarProps> = ({ title, children}) => {
+const Sidebar:FC<SidebarProps> = ({ title, children }) => {
 
     const backToTop = () => {
         scroll.scrollToTop();
@@ -16,19 +17,22 @@ const Sidebar:FC<SidebarProps> = ({ title, children}) => {
 
     return (
         <aside className="sidebar">
-            <div className="sidebar__header">
+            <header className="sidebar__header">
                 <h2>{title}</h2>
                 <button>
-                    <RefreshCw color="rgba(255,255,255,0.3)" size={16} />
-                    <span>refresh</span>
+                    <RefreshCw 
+                        color="rgba(255,255,255,0.3)" 
+                        size={16} 
+                    />
+                    <span>Refresh</span>
                 </button>
-            </div>
+            </header>
             {children}
             <Button 
                 color='#FFF' 
                 label='Back to top'
                 labelColor='#000' 
-                action={() => backToTop}
+                action={() => scroll.scrollToTop}
             />
         </aside>
     );

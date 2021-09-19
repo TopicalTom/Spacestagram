@@ -15,7 +15,7 @@ const Button = ({ color, label, action, labelColor }: ButtonProps) => {
                 backgroundColor: color,
                 borderColor: color 
             }}
-            onClick={() => action}>
+            onClick={action}>
             <span
                 style={{ 
                     color: labelColor
