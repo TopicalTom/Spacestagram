@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux';
 
 interface User {
     uid: string,
-    displayName: string,
-    photoURL: string,
+    displayName: string | null,
+    photoURL: string | null,
 };
 
 interface ProfileProps {
@@ -21,7 +21,7 @@ const Profile = ({ user }: ProfileProps) => {
     return (
         <>
             <div className="profile" onClick={() => dispatch(logout())}>
-                <Avatar photoURL={photoURL} />
+                <Avatar photoURL={photoURL || ""} />
                 <ChevronDown color="#fff" size={12} />
             </div>
         </>

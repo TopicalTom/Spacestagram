@@ -28,13 +28,11 @@ const fetchFromAPI = async () => {
 };
 
 export const fetchNewAPIImages = (currentImages: Image[]): AppThunk => async (dispatch: Dispatch) => {
-    console.log('test');
     try {
         dispatch(setLoading(true));
         const images = await fetchFromAPI();
         if (images) {
             const newArray: Image[] = [...currentImages, ...images];
-            console.log(newArray);
             dispatch(setFetchSuccess(newArray));
         };
     } catch (err) {

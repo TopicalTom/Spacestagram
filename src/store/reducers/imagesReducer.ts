@@ -44,6 +44,10 @@ const imagesSlice = createSlice({
     },
 });
 
-export const { setLoading, setFetchSuccess, setFetchError } = imagesSlice.actions;
+export const { 
+    setLoading, 
+    setFetchSuccess, 
+    setFetchError 
+} = imagesSlice.actions;
 export const imageSelector = (state: RootState) => state.images;
 export const imagesReducer = imagesSlice.reducer;

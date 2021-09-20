@@ -3,8 +3,8 @@ import { RootState } from '../index';
 
 interface User {
     uid: string,
-    displayName: string,
-    photoURL: string
+    displayName: string | null,
+    photoURL: string | null
 };
 
 interface UserState {
@@ -31,7 +31,7 @@ const authSlice = createSlice({
         },
         setAuth: (
             state, 
-            { payload }: PayloadAction<any>
+            { payload }: PayloadAction<User | null>
         ) => {
             state.user = payload;
         },
@@ -43,6 +43,10 @@ const authSlice = createSlice({
     },
 });
 
-export const { setAuthenticating, setAuth, setAuthError } = authSlice.actions;
+export const { 
+    setAuthenticating, 
+    setAuth, 
+    setAuthError 
+} = authSlice.actions;
 export const authSelector = (state: RootState) => state.auth;
 export const authReducer = authSlice.reducer;
