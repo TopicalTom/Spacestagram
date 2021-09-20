@@ -9,7 +9,7 @@ interface SidebarProps {
     action?: () => {}
 }
 
-const Sidebar:FC<SidebarProps> = ({ title, children }) => {
+const Sidebar:FC<SidebarProps> = ({ title, action, children }) => {
 
     const backToTop = () => {
         scroll.scrollToTop();
@@ -19,7 +19,8 @@ const Sidebar:FC<SidebarProps> = ({ title, children }) => {
         <aside className="sidebar">
             <header className="sidebar__header">
                 <h2>{title}</h2>
-                <button>
+                <button
+                    onClick={action}>
                     <RefreshCw 
                         color="rgba(255,255,255,0.3)" 
                         size={16} 
@@ -32,7 +33,7 @@ const Sidebar:FC<SidebarProps> = ({ title, children }) => {
                 color='#FFF' 
                 label='Back to top'
                 labelColor='#000' 
-                action={() => scroll.scrollToTop}
+                action={() => backToTop}
             />
         </aside>
     );

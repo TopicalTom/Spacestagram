@@ -1,7 +1,9 @@
 import './App.scss';
+import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { imageSelector } from './store/reducers';
-import { useSelector } from 'react-redux';
+import { authSelector } from './store/reducers';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchShorthandLikes } from './store/actions';
 import {
     BrowserRouter as Router,
     Switch,
@@ -13,9 +15,14 @@ import Explore from './pages/Explore';
 import Likes from './pages/Likes';
 
 const App = () => {
-    const { error, isLoading } = useSelector(imageSelector);
+    const dispatch = useDispatch();
+    const { isAuthenticating } = useSelector(authSelector);
 
-    //if (isLoading) return <div>....loading</div>;
+    useEffect(() => {
+        dispatch(fetchShorthandLikes('cZroMhP8f5NEoHwCSHb8KA8JYPE3'));
+    }, [dispatch]);
+
+    if (isAuthenticating) return <div>....loading</div>;
     //if (error) return <div>{error}</div>;
 
     return (

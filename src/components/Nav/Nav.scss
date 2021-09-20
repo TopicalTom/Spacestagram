@@ -30,21 +30,40 @@
         justify-content: center;
         padding-inline-start: 0px;
 
-        & > a {
+        & > li {
+            align-items: center;
+            align-content: center;
+        }
+
+        & > li > a {
             color: rgb(51, 51, 51);
-            width: 100px;
+            width: min-content;
             border-radius: 4px;
             padding: 8px 16px;
             text-align: center;
+            margin: 0;
         
             &:hover {
                 background-color: #141414;
                 cursor: pointer;
             }
 
+            & > span {
+                margin-left: 8px;
+                padding: 2px 4px;
+                border-radius: 4px;
+                background-color: #303030;
+                font-size: 10px;
+            }
+
             &.selected {
                 color: white;
                 font-weight: bold;
+
+                & > span {
+                    background-color: #FF5353;
+                    font-weight: 400;
+                }
             }
         }
     }

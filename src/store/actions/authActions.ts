@@ -33,6 +33,7 @@ const createAccount = async (userID: string) => {
 
 const retrieveUserDetails = async (currentUser: User) => {
     const userID = currentUser.uid;
+    
     try {
         const docRef = doc(firestore, "users", userID);
         const docSnap = await getDoc(docRef);

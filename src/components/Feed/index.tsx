@@ -6,7 +6,6 @@ import ImageCard from '../ImageCard';
 import ClipLoader from "react-spinners/ClipLoader";
 
 interface Image {
-    id: string,
     url: string,
     title: string,
     date: string,
@@ -16,12 +15,24 @@ interface Image {
 interface FeedProps {
     data: Image[],
     isLoading: boolean,
-    action: () => {}
+    action?: () => {}
 };
 
 const Feed = ({ data, isLoading, action }: FeedProps) => {
     //const dispatch = useDispatch();
     //const { data, isLoading } = useSelector(imageSelector);
+
+    if (isLoading) { return (
+        <div className="feed">
+            <button className="feed__loader">
+                <ClipLoader 
+                    color='#FFF' 
+                    loading={true} 
+                    size={24} 
+                />
+            </button>
+        </div>
+    )}
     
     return (
         <div className="feed">
@@ -33,18 +44,21 @@ const Feed = ({ data, isLoading, action }: FeedProps) => {
                     />
                 )
             })}
-            <button 
-                className="feed__loader" 
-                onClick={() => action}>{
-                    isLoading 
-                        ?   <ClipLoader 
-                                color='#FFF' 
-                                loading={true} 
-                                size={24} 
-                            />
-                        :   'See more feed content'
-                }
-            </button>
+            {action
+                ?   <button 
+                        className="feed__loader" 
+                        onClick={() => action}>{
+                            isLoading 
+                                ?   <ClipLoader 
+                                        color='#FFF' 
+                                        loading={true} 
+                                        size={24} 
+                                    />
+                                :   'See more feed content'
+                        }
+                    </button>
+                :   <h4>That's it!</h4>
+            }
         </div>
     );
 };

@@ -20,7 +20,7 @@ const API_URL = 'https://api.nasa.gov/planetary/apod?';
 
 const fetchFromAPI = async () => {
     try {
-        const { data } = await axios.get(`${API_URL}api_key=${process.env.REACT_APP_API_KEY}&count=10`);
+        const { data } = await axios.get(`${API_URL}api_key=${process.env.REACT_APP_API_KEY}&count=20`);
         let images = data;
         return images;
     } catch (err) {
@@ -28,7 +28,7 @@ const fetchFromAPI = async () => {
     }
 };
 
-export const fetchNewImages = (currentImages?: Image[]): AppThunk => async (dispatch: Dispatch) => {
+export const fetchNewAPIImages = (currentImages?: Image[]): AppThunk => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoading(true));
         const images = await fetchFromAPI();
@@ -40,9 +40,10 @@ export const fetchNewImages = (currentImages?: Image[]): AppThunk => async (disp
     };
 };
 
-export const fetchImages = (): AppThunk => async (dispatch: Dispatch) => {
+export const fetchAPIImages = (): AppThunk => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoading(true));
+        dispatch(setFetchSuccess([]));
         const images = await fetchFromAPI();
         dispatch(setFetchSuccess(images));
     } catch (err) {

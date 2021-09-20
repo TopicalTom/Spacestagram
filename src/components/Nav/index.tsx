@@ -23,18 +23,23 @@ const Nav = () => {
                 <h1>Spacestagram</h1>
             </div>
             <ul className="nav__router">
-                <NavLink 
-                    exact
-                    to="/"
-                    activeClassName="selected">
-                    Explore
-                </NavLink>
-                <NavLink 
-                    exact
-                    to="/likes"
-                    activeClassName="selected">
-                    Liked {count}
-                </NavLink>
+                <li>
+                    <NavLink 
+                        exact
+                        to="/"
+                        activeClassName="selected">
+                        Explore
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink 
+                        exact
+                        to="/likes"
+                        activeClassName="selected">
+                        Liked 
+                        <span>{count}</span>
+                    </NavLink>
+                </li>
             </ul>
             <div className="nav__actions">
                 {user
