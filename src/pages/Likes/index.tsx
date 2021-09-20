@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { likeSelector } from '../../store/reducers';
+import { likeSelector, authSelector } from '../../store/reducers';
 import { fetchLikes } from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,10 +12,17 @@ import Sidebar from '../../components/Sidebar';
 const Likes = () => {
     const dispatch = useDispatch();
     const { data, isLoadingLikes } = useSelector(likeSelector);
+    const { user } = useSelector(authSelector);
+
+    const grabLikes = () => {
+        if (user) {
+            dispatch(fetchLikes(user.uid));
+        };
+    };
 
     useEffect(() => {
-        dispatch(fetchLikes('cZroMhP8f5NEoHwCSHb8KA8JYPE3'));
-    }, [dispatch]);
+        grabLikes()
+    }, [dispatch, user]);
 
     return (
         <Page>
@@ -25,7 +32,7 @@ const Likes = () => {
             />
             <Sidebar 
                 title="Your Likes"
-                action={() => dispatch(fetchLikes('cZroMhP8f5NEoHwCSHb8KA8JYPE3'))}>
+                action={user ? () => dispatch(fetchLikes(user.uid)) : undefined}>
                 <Container 
                     title="About">
                     <p>Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.</p>

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 
 interface Image {
-    id: string,
     url: string,
     title: string,
     date: string,

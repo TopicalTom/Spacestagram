@@ -19,12 +19,17 @@ interface LikeProps {
 const Like = ({ imageRef, isLiked }: LikeProps) => {
     const dispatch = useDispatch();
     const { user } = useSelector(authSelector);
-    console.log(user);
+
+    const likeAction = () => {
+        if (user) {
+            dispatch(toggleLike(user.uid, imageRef, isLiked))
+        };
+    };
 
     return (
         <button 
             className="like" 
-            onClick={() => dispatch(toggleLike('cZroMhP8f5NEoHwCSHb8KA8JYPE3', imageRef, isLiked))}>
+            onClick={likeAction}>
             <Heart 
                 fill={isLiked ? "#FF5353": "transparent"}
                 color={isLiked ? "#FF5353": "#FFF"} 

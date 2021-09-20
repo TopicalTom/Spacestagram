@@ -1,12 +1,13 @@
 import './Profile.scss';
 import { ChevronDown } from 'react-feather';
 import Avatar from '../Avatar';
+import { logout } from '../../store/actions';
+import { useDispatch } from 'react-redux';
 
 interface User {
     uid: string,
-    displayName: string | null,
-    photoURL: string | null,
-    likes?: string[] | null
+    displayName: string,
+    photoURL: string,
 };
 
 interface ProfileProps {
@@ -14,12 +15,13 @@ interface ProfileProps {
 };
 
 const Profile = ({ user }: ProfileProps) => {
-    const { photoURL, displayName } = user;
+    const { photoURL } = user;
+    const dispatch = useDispatch();
     
     return (
         <>
-            <div className="profile">
-                <Avatar photoURL={photoURL?.toString()} />
+            <div className="profile" onClick={() => dispatch(logout())}>
+                <Avatar photoURL={photoURL} />
                 <ChevronDown color="#fff" size={12} />
             </div>
         </>

@@ -12,11 +12,16 @@ const ImageSocial = ({ isLiked }: ImageSocialProps) => {
     
     return (
         <div className="image-social">
-            {!user?.photoURL
-                ?   <div />
-                :   <Avatar photoURL={user.photoURL} />
+            {!user
+                ?   <>
+                        <div />
+                        <span>Register to like and save</span>
+                    </>
+                :   <>
+                        <Avatar photoURL={user.photoURL} />
+                        <span>{isLiked ? 'Liked by you' : 'Be the first like'}</span>
+                    </>
             }
-            <span>{isLiked ? 'liked by you' : 'Be the first like'}</span>
         </div>
     );
 };

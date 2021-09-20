@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { authSelector } from './store/reducers';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchShorthandLikes } from './store/actions';
+import { fetchShorthandLikes, checkForStoredDetails } from './store/actions';
 import {
     BrowserRouter as Router,
     Switch,
@@ -16,14 +16,19 @@ import Likes from './pages/Likes';
 
 const App = () => {
     const dispatch = useDispatch();
-    const { isAuthenticating } = useSelector(authSelector);
+    const { isAuthenticating, user } = useSelector(authSelector);
 
     useEffect(() => {
-        dispatch(fetchShorthandLikes('cZroMhP8f5NEoHwCSHb8KA8JYPE3'));
+        if (user) {
+            dispatch(fetchShorthandLikes(user.uid));
+        }
+    }, [user]);
+
+    useEffect(() => {
+        dispatch(checkForStoredDetails());
     }, [dispatch]);
 
     if (isAuthenticating) return <div>....loading</div>;
-    //if (error) return <div>{error}</div>;
 
     return (
         <Router>
@@ -33,6 +38,7 @@ const App = () => {
                     <Likes />
                 </Route>
                 <Route 
+                    exact
                     path="/">
                     <Explore />
                 </Route>
@@ -40,7 +46,7 @@ const App = () => {
             <ToastContainer 
                 position="bottom-center"
                 autoClose={5000}
-                hideProgressBar={false}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}

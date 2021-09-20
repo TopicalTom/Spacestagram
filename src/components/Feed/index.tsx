@@ -1,9 +1,8 @@
 import './Feed.scss';
-//import { imageSelector } from '../../store/reducers';
-//import { fetchNewImages } from '../../store/actions';
-import ImageCard from '../ImageCard';
-//import { useSelector, useDispatch } from 'react-redux';
 import ClipLoader from "react-spinners/ClipLoader";
+
+// Components
+import ImageCard from '../ImageCard';
 
 interface Image {
     url: string,
@@ -19,20 +18,20 @@ interface FeedProps {
 };
 
 const Feed = ({ data, isLoading, action }: FeedProps) => {
-    //const dispatch = useDispatch();
-    //const { data, isLoading } = useSelector(imageSelector);
 
-    if (isLoading) { return (
-        <div className="feed">
-            <button className="feed__loader">
-                <ClipLoader 
-                    color='#FFF' 
-                    loading={true} 
-                    size={24} 
-                />
-            </button>
-        </div>
-    )}
+    if (data.length === 0 && isLoading) { 
+        return (
+            <div className="feed">
+                <button className="feed__loader">
+                    <ClipLoader 
+                        color='#FFF' 
+                        loading={true} 
+                        size={24} 
+                    />
+                </button>
+            </div>
+        );
+    };
     
     return (
         <div className="feed">
@@ -47,7 +46,7 @@ const Feed = ({ data, isLoading, action }: FeedProps) => {
             {action
                 ?   <button 
                         className="feed__loader" 
-                        onClick={() => action}>{
+                        onClick={action}>{
                             isLoading 
                                 ?   <ClipLoader 
                                         color='#FFF' 

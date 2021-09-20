@@ -9,7 +9,6 @@ import {
 } from '../reducers/imagesReducer';
 
 interface Image {
-    id: string,
     url: string,
     title: string,
     date: string,
@@ -21,18 +20,23 @@ const API_URL = 'https://api.nasa.gov/planetary/apod?';
 const fetchFromAPI = async () => {
     try {
         const { data } = await axios.get(`${API_URL}api_key=${process.env.REACT_APP_API_KEY}&count=20`);
-        let images = data;
+        let images: Image[] = data;
         return images;
     } catch (err) {
         console.log(err)
     }
 };
 
-export const fetchNewAPIImages = (currentImages?: Image[]): AppThunk => async (dispatch: Dispatch) => {
+export const fetchNewAPIImages = (currentImages: Image[]): AppThunk => async (dispatch: Dispatch) => {
+    console.log('test');
     try {
         dispatch(setLoading(true));
         const images = await fetchFromAPI();
-        dispatch(setFetchSuccess([currentImages, images]));
+        if (images) {
+            const newArray: Image[] = [...currentImages, ...images];
+            console.log(newArray);
+            dispatch(setFetchSuccess(newArray));
+        };
     } catch (err) {
         dispatch(setFetchError('There was an issue handling your request, please try again.'));
     } finally {
@@ -45,7 +49,9 @@ export const fetchAPIImages = (): AppThunk => async (dispatch: Dispatch) => {
         dispatch(setLoading(true));
         dispatch(setFetchSuccess([]));
         const images = await fetchFromAPI();
-        dispatch(setFetchSuccess(images));
+        if (images) {
+            dispatch(setFetchSuccess(images));
+        };
     } catch (err) {
         dispatch(setFetchError('There was an issue handling your request, please try again.'));
     } finally {

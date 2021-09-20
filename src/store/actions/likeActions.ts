@@ -55,6 +55,7 @@ export const fetchLikes = (id: string): AppThunk => async (dispatch: Dispatch) =
     try {
         if (!id) { return };
         dispatch(setLoadingLikes(true));
+        dispatch(setLikes([]));
         const docRef = doc(firestore, "users", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {

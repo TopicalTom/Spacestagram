@@ -3,9 +3,8 @@ import { RootState } from '../index';
 
 interface User {
     uid: string,
-    displayName: string | null,
-    photoURL: string | null
-    likes?: string[]
+    displayName: string,
+    photoURL: string
 };
 
 interface UserState {
