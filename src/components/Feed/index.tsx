@@ -1,6 +1,9 @@
 import './Feed.scss';
 import ClipLoader from "react-spinners/ClipLoader";
 
+// Assets
+import { EmptyState } from '../../assets/images'
+
 // Components
 import ImageCard from '../ImageCard';
 
@@ -21,7 +24,7 @@ const Feed = ({ data, isLoading, action }: FeedProps) => {
 
     if (data.length === 0 && isLoading) { 
         return (
-            <div className="feed">
+            <section className="feed">
                 <button className="feed__loader">
                     <ClipLoader 
                         color='#FFF' 
@@ -29,12 +32,22 @@ const Feed = ({ data, isLoading, action }: FeedProps) => {
                         size={24} 
                     />
                 </button>
-            </div>
+            </section>
         );
     };
+
+    if (data.length === 0) {
+        return (
+            <section className="feed">
+                <div className="feed__empty">
+                    <EmptyState />
+                </div>
+            </section>
+        );
+    }
     
     return (
-        <div className="feed">
+        <section className="feed">
             {data && data.map(image => {
                 return (
                     <ImageCard 
@@ -53,12 +66,14 @@ const Feed = ({ data, isLoading, action }: FeedProps) => {
                                         loading={true} 
                                         size={24} 
                                     />
-                                :   'See more feed content'
+                                :   'Load more content'
                         }
                     </button>
-                :   <h4>That's it!</h4>
+                :   <div className="feed__end">
+                        <span>You've explored all there is!</span>
+                    </div>
             }
-        </div>
+        </section>
     );
 };
 

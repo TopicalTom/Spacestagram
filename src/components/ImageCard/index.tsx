@@ -26,7 +26,7 @@ const ImageCard = (props: ImageProps) => {
     },[likes, date]);
     
     return (
-        <div className="image-card">
+        <article className="image-card">
             <ImagePreview 
                 url={url} 
                 title={title} 
@@ -38,7 +38,7 @@ const ImageCard = (props: ImageProps) => {
             <ImageSocial 
                 isLiked={isLiked}
             />
-        </div>
+        </article>
     );
 };
 

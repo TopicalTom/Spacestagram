@@ -29,12 +29,7 @@ const Sidebar:FC<SidebarProps> = ({ title, action, children }) => {
                 </button>
             </header>
             {children}
-            <Button 
-                color='#FFF' 
-                label='Back to top'
-                labelColor='#000' 
-                action={() => backToTop}
-            />
+            <button onClick={() => scroll.scrollToTop()}>Back to top</button>
         </aside>
     );
 };
