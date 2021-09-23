@@ -13,4 +13,5 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
+export * as actionCreators from './actions';
 export default rootReducer;

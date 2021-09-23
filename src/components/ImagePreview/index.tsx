@@ -1,11 +1,12 @@
 import './ImagePreview.scss';
+import { FC } from 'react';
 
 interface ImagePreviewProps {
     url: string
     title: string
 };
 
-const ImagePreview = ({ url, title }: ImagePreviewProps) => {
+const ImagePreview: FC<ImagePreviewProps> = ({ url, title }) => {
     
     return (
         <div className="image-preview">

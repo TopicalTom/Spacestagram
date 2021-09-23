@@ -1,7 +1,8 @@
 import './Nav.scss';
+import { FC } from 'react';
 import { authSelector, likeSelector } from '../../store/reducers';
-import { login } from '../../store/actions';
-import { useSelector, useDispatch } from 'react-redux';
+import { useActions } from '../../hooks';
+import { useSelector } from 'react-redux';
 import { NavLink } from "react-router-dom";
 
 // Assets
@@ -11,8 +12,8 @@ import { Logo } from '../../assets/logo';
 import Profile from '../Profile';
 import Button from '../Button';
 
-const Nav = () => {
-    const dispatch = useDispatch();
+const Nav: FC = () => {
+    const { login } = useActions();
     const { user } = useSelector(authSelector);
     const { count } = useSelector(likeSelector);
     
@@ -49,13 +50,13 @@ const Nav = () => {
                                 color="#141414"
                                 label="Sign in"
                                 labelColor="#fff"
-                                action={() => dispatch(login())}
+                                action={() => login()}
                             />
                             <Button 
                                 color="#fff"
                                 label="Register"
                                 labelColor="#090909"
-                                action={() => dispatch(login())}
+                                action={() => login()}
                             />
                         </>
                 }

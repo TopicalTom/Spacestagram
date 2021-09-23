@@ -1,31 +1,33 @@
+@import "../../styles/baseline.scss";
+
 .image-social {
     display: flex;
     flex-direction: row;
-    padding: 24px;
+    padding: 1.5rem;
     align-items: center;
-    height: 56px;
+    height: 3.5rem;
 
     &:hover {
-        background-color: #141414;
+        background-color: $dark-grey;
         cursor: pointer;
     }
 
     & > div {
-        height: 32px;
-        width: 32px;
+        height: 2rem;
+        width: 2rem;
         border-radius: 100%;
-        background-color: #303030;
+        background-color: $mid-grey;
         overflow: hidden;
 
         & > img {
-            height: 32px;
-            width: 32px;
+            height: 2rem;
+            width: 2rem;
             border-radius: 100%;
         }
     }
 
     & > span {
-        color: white;
-        padding-left: 12px;
+        color: $white;
+        padding-left: 0.75rem;
     }
 }

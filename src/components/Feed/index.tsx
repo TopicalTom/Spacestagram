@@ -1,18 +1,13 @@
 import './Feed.scss';
-import ClipLoader from "react-spinners/ClipLoader";
+import { FC } from 'react';
+import { Image } from '../../store/reducers';
 
 // Assets
-import { EmptyState } from '../../assets/images'
+import { EmptyState } from '../../assets/images';
 
 // Components
 import ImageCard from '../ImageCard';
-
-interface Image {
-    url: string,
-    title: string,
-    date: string,
-    explanation: string,
-};
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface FeedProps {
     data: Image[],
@@ -20,7 +15,7 @@ interface FeedProps {
     action?: () => {}
 };
 
-const Feed = ({ data, isLoading, action }: FeedProps) => {
+const Feed: FC<FeedProps> = ({ data, isLoading, action }) => {
 
     if (data.length === 0 && isLoading) { 
         return (

@@ -1,11 +1,12 @@
 import './Avatar.scss';
+import { FC } from 'react';
 
 interface AvatarProps {
     photoURL?: string,
     size?: number
 };
 
-const Avatar = ({ photoURL, size }: AvatarProps) => {
+const Avatar: FC<AvatarProps> = ({ photoURL, size }) => {
     return (
         <img 
             className="avatar"

@@ -2,9 +2,9 @@ import './Page.scss';
 import { FC } from 'react';
 
 // Components
-import Nav from '../../components/Nav';
+import Nav from '../Nav';
 
-const Page:FC = ({ children }) => {
+const Page: FC = ({ children }) => {
     return (
         <div className="page" >
             <Nav />

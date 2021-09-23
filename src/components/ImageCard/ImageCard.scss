@@ -1,9 +1,17 @@
+@import "../../styles/baseline.scss";
+
 .image-card {
-    border-radius: 8px;
-    background-color: #090909;
+    background-color: $background;
     display: flex;
     flex-direction: column;
-    max-width: 600px;
+    width: 100vw;
     overflow: hidden;
-    border: 1px solid #303030;
+    border-top: 0.063rem solid $mid-grey;
+    border-bottom: 0.063rem solid $mid-grey;
+
+    @include tablet {
+        max-width: 37.5rem;
+        border-radius: 0.5rem;
+        border: 0.063rem solid $mid-grey;
+    }
 }

@@ -1,13 +1,15 @@
+@import "../../styles/baseline.scss";
+
 .like {
     background-color: transparent;
-    padding: 5px 0px;
-    height: 32px;
-    width: 32px;
+    padding: 0.313rem 0rem;
+    height: 2rem;
+    width: 2rem;
     border: none;
     border-radius: 100%;
     
     &:hover {
         cursor: pointer;
-        background-color: #141414;
+        background-color: $dark-grey;
     }
 }

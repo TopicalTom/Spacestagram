@@ -1,19 +1,12 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AppThunk } from '../store';
-import 'react-toastify/dist/ReactToastify.css';
 import { 
     setLoading, 
     setFetchSuccess,
     setFetchError
 } from '../reducers/imagesReducer';
-
-interface Image {
-    url: string,
-    title: string,
-    date: string,
-    explanation: string,
-};
+import { Image } from '../reducers';
 
 const API_URL = 'https://api.nasa.gov/planetary/apod?';
 

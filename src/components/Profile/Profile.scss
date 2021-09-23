@@ -1,13 +1,15 @@
+@import "../../styles/baseline.scss";
+
 .profile {
     display: grid;
-    grid-template-columns: 32px min-content;
+    grid-template-columns: 2rem min-content;
     align-items: center;
-    column-gap: 4px;
-    border-radius: 4px;
-    padding: 4px 8px;
+    column-gap: 0.25rem;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
 
     &:hover {
-        background-color: #141414;
+        background-color: $dark-grey;
         cursor: pointer;
     }
 }

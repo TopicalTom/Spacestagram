@@ -1,4 +1,7 @@
 import './AvatarCollection.scss';
+import { FC } from 'react';
+
+// Components
 import Avatar from '../Avatar';
 
 interface AvatarCollectionProps {
@@ -6,7 +9,7 @@ interface AvatarCollectionProps {
     count: number
 };
 
-const AvatarCollection = ({ photoURLs, count }: AvatarCollectionProps) => {
+const AvatarCollection: FC<AvatarCollectionProps> = ({ photoURLs, count }) => {
     return (
        <div>
            

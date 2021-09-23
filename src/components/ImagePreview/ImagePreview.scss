@@ -1,9 +1,19 @@
+@import "../../styles/baseline.scss";
+
 .image-preview {
-    height: 400px;
-    width: 600px;
+    height: 25rem;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     position: relative;
+
+    @include tablet {
+        width: 100%;
+    }
+
+    @include laptop-small {
+        width: 37.5rem;
+    }
 }

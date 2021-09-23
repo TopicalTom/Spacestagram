@@ -1,9 +1,9 @@
-import './App.scss';
-import { useEffect } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { FC, useEffect } from 'react';
+import { useActions } from './hooks';
 import { ToastContainer } from 'react-toastify';
 import { authSelector } from './store/reducers';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchShorthandLikes, checkForStoredDetails } from './store/actions';
+import { useSelector } from 'react-redux';
 import {
     BrowserRouter as Router,
     Switch,
@@ -14,19 +14,19 @@ import {
 import Explore from './pages/Explore';
 import Likes from './pages/Likes';
 
-const App = () => {
-    const dispatch = useDispatch();
+const App: FC = () => {
+    const { fetchShorthandLikes, checkForStoredDetails } = useActions();
     const { isAuthenticating, user } = useSelector(authSelector);
 
     useEffect(() => {
-        if (user) {
-            dispatch(fetchShorthandLikes(user.uid));
-        }
-    }, [user]);
+        checkForStoredDetails();
+    }, []);
 
     useEffect(() => {
-        dispatch(checkForStoredDetails());
-    }, [dispatch]);
+        if (user) {
+            fetchShorthandLikes(user.uid);
+        }
+    }, [user]);
 
     if (isAuthenticating) return <div>....loading</div>;
 

@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { likeSelector, authSelector } from '../../store/reducers';
-import { fetchLikes } from '../../store/actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useActions } from '../../hooks';
+import { useSelector } from 'react-redux';
 
 // Components
 import Page from '../../components/Page';
@@ -9,20 +9,16 @@ import Container from '../../components/ContentContainer';
 import Feed from '../../components/Feed';
 import Sidebar from '../../components/Sidebar';
 
-const Likes = () => {
-    const dispatch = useDispatch();
+const Likes: FC = () => {
+    const { fetchLikes } = useActions();
     const { data, isLoadingLikes } = useSelector(likeSelector);
     const { user } = useSelector(authSelector);
 
-    const grabLikes = () => {
-        if (user) {
-            dispatch(fetchLikes(user.uid));
-        };
-    };
-
     useEffect(() => {
-        grabLikes()
-    }, [dispatch, user]);
+        if (user) {
+            fetchLikes(user.uid);
+        };
+    }, [user]);
 
     return (
         <Page>
@@ -32,10 +28,10 @@ const Likes = () => {
             />
             <Sidebar 
                 title="Your Likes"
-                action={user ? () => dispatch(fetchLikes(user.uid)) : undefined}>
+                action={user ? () => fetchLikes(user.uid) : undefined}>
                 <Container 
                     title="About">
-                    <p>Each day a different image or photograph of our fascinating universe is featured, along with a brief explanation written by a professional astronomer.</p>
+                    <p>Keep track of the images or photographs of our universe that you have previously liked all in one place.</p>
                 </Container>
             </Sidebar>
         </Page>

@@ -1,17 +1,28 @@
+@import "../../styles/baseline.scss";
+
 .nav {
     grid-area: navi;
     position: fixed;
-    grid-template-areas: ". watermark router actions .";
-    grid-template-columns: 1fr 400px 200px 400px 1fr;
-    grid-template-rows: 56px;
+    grid-template-areas: ". watermark actions .";
+    grid-template-columns: 1rem repeat(2, calc(50vw - 1rem)) 1rem;
+    grid-template-rows: 3.5rem;
     display: grid;
     justify-content: space-between;
     align-items: center;
     top: 0;
-    width: 100%;
-    border-bottom: 0.5px solid #1f1f1f;
-    background-color: #090909;
+    width: 100vw;
+    border-bottom: 0.063rem solid $dark-grey;
+    background-color: $background;
     z-index: 90;
+
+    @include tablet {
+        grid-template-areas: ". watermark router actions .";
+        grid-template-columns: 1rem repeat(3, calc(33% - 1rem)) 1rem;
+    }
+
+    @include laptop-small {
+        grid-template-columns: 1fr 25rem 12.5rem 25rem 1fr;
+    }
 
     &__watermark {
         grid-area: watermark;
@@ -19,16 +30,20 @@
         flex-direction: row;
 
         & > h1 {
-            padding-left: 12px;
+            padding-left: 0.75rem;
         }
     }
 
     &__router {
-        grid-area: router;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        padding-inline-start: 0px;
+        display: none;
+
+        @include tablet {
+            grid-area: router;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            padding-inline-start: 0rem;
+        }
 
         & > li {
             align-items: center;
@@ -36,32 +51,32 @@
         }
 
         & > li > a {
-            color: rgb(51, 51, 51);
+            color: $mid-grey;
             width: min-content;
-            border-radius: 4px;
-            padding: 8px 16px;
+            border-radius: 0.25rem;
+            padding: 0.5rem 1rem;
             text-align: center;
             margin: 0;
         
             &:hover {
-                background-color: #141414;
+                background-color: $dark-grey;
                 cursor: pointer;
             }
 
             & > span {
-                margin-left: 8px;
-                padding: 2px 4px;
-                border-radius: 4px;
-                background-color: #303030;
-                font-size: 10px;
+                margin-left: 0.5rem;
+                padding: 0.125rem 0.25rem;
+                border-radius: 0.25rem;
+                background-color: $mid-grey;
+                font-size: 0.625rem;
             }
 
             &.selected {
-                color: white;
+                color: $white;
                 font-weight: bold;
 
                 & > span {
-                    background-color: #FF5353;
+                    background-color: $red;
                     font-weight: 400;
                 }
             }
@@ -75,7 +90,7 @@
         justify-content: flex-end;
 
         & > button:nth-last-child(0) {
-            margin-left: 16px;
+            margin-left: 1rem;
         }
     }
 }

@@ -19,13 +19,7 @@ import {
     setCount,
     setLoadingLikes
 } from '../reducers/likeReducer';
-
-interface Image {
-    url: string,
-    title: string,
-    date: string,
-    explanation: string,
-};
+import { Image } from '../reducers';
 
 const firestore = getFirestore(firebase);
 

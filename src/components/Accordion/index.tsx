@@ -1,11 +1,11 @@
 import './Accordion.scss';
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 
 interface AccordionProps {
     content: string
 };
 
-const Accordion = ({ content }: AccordionProps) => {
+const Accordion: FC<AccordionProps> = ({ content }) => {
     const [ isActive, setIsActive ] = useState(false);
 
     return (

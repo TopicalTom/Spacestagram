@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
-
-interface Image {
-    url: string,
-    title: string,
-    date: string,
-    explanation: string,
-};
+import { Image } from '../reducers';
 
 interface LikeState {
     isLoadingLikes: boolean,

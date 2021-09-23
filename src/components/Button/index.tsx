@@ -1,4 +1,5 @@
 import './Button.scss';
+import { FC } from 'react';
 
 interface ButtonProps {
     color?: string,
@@ -7,7 +8,7 @@ interface ButtonProps {
     labelColor: string
 };
 
-const Button = ({ color, label, action, labelColor }: ButtonProps) => {
+const Button: FC<ButtonProps> = ({ color, label, action, labelColor }) => {
     return (
        <button 
             className="button"

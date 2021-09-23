@@ -1,19 +1,25 @@
+@import "../../styles/baseline.scss";
+
 .sidebar {
-    grid-area: sidebar;
-    display: grid;
-    grid-template-rows: min-content 1fr min-content;
-    justify-content: space-between;
-    position: sticky;
-    top: 104px;
-    height: calc(100vh - 104px);
-    padding-bottom: 48px;
+    display: none;
+
+    @include laptop {
+        grid-area: sidebar;
+        display: grid;
+        grid-template-rows: min-content 1fr min-content;
+        justify-content: space-between;
+        position: sticky;
+        top: 6.5rem;
+        height: calc(100vh - 6.5rem);
+        padding-bottom: 3rem;
+    }
 
     &__header {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
 
         & > button {
             display: flex;
@@ -21,18 +27,33 @@
             background-color: transparent;
             border-color: transparent;
             width: min-content;
-            border-radius: 4px;
-            padding: 4px 8px;
+            border-radius: 0.25rem;
+            padding: 0.25em 0.5rem;
         
             &:hover {
-                background-color: #141414;
+                background-color: $dark-grey;
                 cursor: pointer;
             }
 
             & > span {
-                padding-left: 8px;
-                color: rgba(255,255,255,0.3);
+                padding-left: 0.5rem;
+                color: $light-grey;
             }
+        }
+    }
+
+    &__scroller {
+        display: flex;
+        flex-direction: row;
+        width: fit-content;
+        border-radius: 0.25rem;
+        border-width: 0.063rem;
+        padding: 0.5rem 1rem;
+        justify-self: center;
+        align-items: center;
+    
+        &:hover {
+            cursor: pointer;
         }
     }
 }

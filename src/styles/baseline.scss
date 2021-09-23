@@ -1,41 +1,40 @@
 @import "./partials/breakpoints";
-@import "./partials/mixins";
+@import "./partials/colors";
 
 html, 
 body {
     margin: 0;
     box-sizing: border-box;
-    background: #090909;
+    background: $background;
 }
 
 h1 {
-    font-size: 24px;
-    color: white;
+    font-size: 1.5rem;
+    color: $white;
 }
 
 h2 {
-    font-size: 24px;
-    color: white;
+    font-size: 1.5rem;
+    color: $white;
 
 }
 
 h3 {
-
-    color: white;
+    color: $white;
 
 }
 
 p {
-    font-size: 14px;
-    color: white;
+    font-size: 0.875rem;
+    color: $white;
 }
 
 span {
-    color: white;
+    color: $white;
 }
 
 a {
-    color: #3a3a3a;
+    color: $blue;
     list-style: none;
     list-style-type: none;
     text-decoration: none;
@@ -50,5 +49,5 @@ a {
     list-style-type: none;
     text-decoration: none;
     margin: 0;
-    outline-color: #2997ff;
+    outline-color: $blue;
 }

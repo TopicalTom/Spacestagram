@@ -1,11 +1,12 @@
 import './Tag.scss';
+import { FC } from 'react';
 import { Calendar } from 'react-feather';
 
 interface TagProps {
     date: string
 };
 
-const Tag = ({ date }: TagProps) => {
+const Tag: FC<TagProps> = ({ date }) => {
     
     return (
         <div className="Tag">
