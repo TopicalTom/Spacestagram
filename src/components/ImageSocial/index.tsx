@@ -1,17 +1,20 @@
 import './ImageSocial.scss';
 import { FC } from 'react';
-import { authSelector } from '../../store/reducers';
+import { authSelector, User } from '../../store/reducers';
 import { useSelector } from 'react-redux';
 
 // Components
 import Avatar from '../Avatar';
 
 interface ImageSocialProps {
+    likes: User[],
     isLiked: boolean
 };
 
-const ImageSocial: FC<ImageSocialProps> = ({ isLiked }) => {
+const ImageSocial: FC<ImageSocialProps> = ({ likes, isLiked }) => {
     const { user } = useSelector(authSelector);
+
+    console.log(likes);
     
     return (
         <div className="image-social">

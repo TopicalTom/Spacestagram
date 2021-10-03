@@ -1,6 +1,6 @@
 import './ImageCard.scss';
 import { FC, useEffect, useState } from 'react';
-import { likeSelector } from '../../store/reducers';
+import { likeSelector, User } from '../../store/reducers';
 import { useSelector } from 'react-redux';
 
 // Components
@@ -9,33 +9,38 @@ import ImageDetails from '../ImageDetails';
 import ImageSocial from '../ImageSocial';
 
 interface ImageProps {
-    date: string,
-    title: string,
     url: string,
+    title: string,
+    date: string,
     explanation: string,
+    copyright?: string,
+    hdurl: string,
+    likes: User[],
+    media_type: string,
+    service_version: string
 };
 
 const ImageCard: FC<ImageProps> = (props) => {
-    const { date, title, url } = props;
     const { likes } = useSelector(likeSelector);
     const [ isLiked, setIsLiked ] = useState(false);
 
     useEffect(() => {
-        const likeStatus = likes.includes(date);
+        const likeStatus = likes.includes(props.date);
         setIsLiked(likeStatus);
-    },[likes, date]);
+    },[likes, props.date]);
     
     return (
         <article className="image-card">
             <ImagePreview 
-                url={url} 
-                title={title} 
+                url={props.url} 
+                title={props.title} 
             />
             <ImageDetails 
                 imageRef={props}
                 isLiked={isLiked}
             />
             <ImageSocial 
+                likes={props.likes}
                 isLiked={isLiked}
             />
         </article>

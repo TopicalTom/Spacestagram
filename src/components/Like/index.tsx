@@ -17,7 +17,7 @@ const Like: FC<LikeProps> = ({ imageRef, isLiked }) => {
 
     const likeAction = () => {
         if (user) {
-            toggleLike(user.uid, imageRef, isLiked);
+            toggleLike(user.uid, user, imageRef, isLiked);
         };
     };
 

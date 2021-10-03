@@ -1,15 +1,21 @@
 import firebase from '../../firebase';
+import { Dispatch } from 'redux';
+import { AppThunk } from '../store';
 import { 
     getAuth, 
     signInWithPopup, 
     GoogleAuthProvider 
 } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
-import { Dispatch } from 'redux';
-import { AppThunk } from '../store';
+import { 
+    getFirestore, 
+    doc, 
+    setDoc, 
+    getDoc 
+} from "firebase/firestore";
 import { 
     setAuthenticating, 
     setAuth,
+    setLikes,
     setAuthError,
     setClearLikes 
 } from '../reducers';
@@ -48,22 +54,27 @@ export const checkForStoredDetails = (): AppThunk => async (dispatch: Dispatch) 
     };
 };
 
+const googleSignIn = async () => {
+    const result = await signInWithPopup(auth, provider);
+    const user = {
+        uid: result.user.uid,
+        displayName: result.user.displayName,
+        photoURL: result.user.photoURL
+    };
+    return user;
+}
+
 export const login = (): AppThunk => async (dispatch: Dispatch) => {
     try {
         dispatch(setAuthenticating(true));
         // User is redirected to Google Sign in
-        const result = await signInWithPopup(auth, provider);
-        const user = {
-            uid: result.user.uid,
-            displayName: result.user.displayName,
-            photoURL: result.user.photoURL
-        };
+        let userDetails = await googleSignIn();
         // Checks for pre-existing account
-        await checkUserDatabase(user.uid);
+        await checkUserDatabase(userDetails.uid);
         // Stores relevant Auth data
-        if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
-            dispatch(setAuth(user));
+        if (userDetails) {
+            localStorage.setItem("user", JSON.stringify(userDetails));
+            dispatch(setAuth(userDetails));
         }
     } catch (err) {
         dispatch(setAuthError('Unable to login'));

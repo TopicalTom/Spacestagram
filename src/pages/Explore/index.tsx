@@ -1,5 +1,5 @@
-import {FC, useEffect } from 'react';
-import { imageSelector } from '../../store/reducers';
+import { FC, useEffect } from 'react';
+import { apiSelector } from '../../store/reducers';
 import { useActions } from '../../hooks';
 import { useSelector } from 'react-redux';
 
@@ -10,8 +10,8 @@ import Feed from '../../components/Feed';
 import Sidebar from '../../components/Sidebar';
 
 const Explore: FC = () => {
-    const { fetchAPIImages, fetchNewAPIImages } = useActions();
-    const { data, isLoading } = useSelector(imageSelector);
+    const { fetchAPIImages } = useActions();
+    const { data, isLoading } = useSelector(apiSelector);
 
     useEffect(() => {
         fetchAPIImages();
@@ -21,8 +21,8 @@ const Explore: FC = () => {
         <Page>
             <Feed 
                 data={data}
-                action={() => fetchNewAPIImages(data)}
                 isLoading={isLoading}
+                action={() => fetchAPIImages(data)}
             />
             <Sidebar 
                 title="Daily Feed"

@@ -1,12 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { 
-    imagesReducer,
+    apiReducer,
     likeReducer,
     authReducer 
 } from './reducers';
 
 const rootReducer = combineReducers({
-    images: imagesReducer,
+    api: apiReducer,
     likes: likeReducer,
     auth: authReducer
 });

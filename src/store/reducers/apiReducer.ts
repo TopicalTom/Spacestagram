@@ -1,27 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
+import { User } from '../reducers';
 
 export interface Image {
     url: string,
     title: string,
     date: string,
     explanation: string,
+    copyright?: string,
+    hdurl: string,
+    likes: User[],
+    media_type: string,
+    service_version: string
 };
 
-interface ImagesState {
+interface APIState {
     isLoading: boolean;
     error: string | null;
     data: Image[];
 };
 
-const initialState: ImagesState = {
+const initialState: APIState = {
     isLoading: false,
     error: null,
     data: []
 };
 
-const imagesSlice = createSlice({
-    name: 'images',
+const apiSlice = createSlice({
+    name: 'api',
     initialState,
     reducers: {
         setLoading: (
@@ -30,7 +36,7 @@ const imagesSlice = createSlice({
         ) => {
             state.isLoading = payload;
         },
-        setFetchSuccess: (
+        setAPIImages: (
             state, 
             { payload }: PayloadAction<Image[]>
         ) => {
@@ -46,8 +52,8 @@ const imagesSlice = createSlice({
 
 export const { 
     setLoading, 
-    setFetchSuccess, 
+    setAPIImages, 
     setFetchError 
-} = imagesSlice.actions;
-export const imageSelector = (state: RootState) => state.images;
-export const imagesReducer = imagesSlice.reducer;
+} = apiSlice.actions;
+export const apiSelector = (state: RootState) => state.api;
+export const apiReducer = apiSlice.reducer;

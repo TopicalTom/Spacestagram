@@ -5,57 +5,64 @@ import { toast } from 'react-toastify';
 import { 
     getFirestore, 
     doc, 
+    setDoc,
     getDoc, 
     updateDoc, 
     arrayRemove, 
     arrayUnion, 
-    FieldValue 
+    FieldValue,
+    query,
+    where,
+    collection, 
+    getDocs 
 } from "firebase/firestore";
 import { 
     setLike,
-    setShorthandLikes,
-    setLikes, 
+    setLikes,
+    setLikedImages, 
     setUnlike,
     setCount,
     setLoadingLikes
-} from '../reducers/likeReducer';
-import { Image } from '../reducers';
+} from '../reducers';
+import { Image, User } from '../reducers';
 
 const firestore = getFirestore(firebase);
-
-export const fetchShorthandLikes = (id: string): AppThunk => async (dispatch: Dispatch) => {
-    try {
-        if (!id) { return };
-        dispatch(setLoadingLikes(true));
-        const docRef = doc(firestore, "users", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            let shorthandLikes = docSnap.data().likes.map((
-                item: { date: string; }
-            ) => item.date); 
-            console.log(shorthandLikes);
-            dispatch(setShorthandLikes(shorthandLikes));
-        }
-    } catch (err) {
-        console.log(err);
-        // Toast for unable to update like
-    } finally {
-        dispatch(setCount());
-        dispatch(setLoadingLikes(false));
-    }
-};
 
 export const fetchLikes = (id: string): AppThunk => async (dispatch: Dispatch) => {
     try {
         if (!id) { return };
         dispatch(setLoadingLikes(true));
-        dispatch(setLikes([]));
         const docRef = doc(firestore, "users", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             dispatch(setLikes(docSnap.data().likes));
         }
     } catch (err) {
+        console.log(err)
+        //toast(err.toString());
+    } finally {
+        dispatch(setCount());
+        dispatch(setLoadingLikes(false));
+    }
+};
+
+export const fetchLikedImages = (user: User): AppThunk => async (dispatch: Dispatch) => {
+    try {
+        if (!user) { return };
+        dispatch(setLoadingLikes(true));
+        dispatch(setLikedImages([]));
+        const collectionRef = collection(firestore, "images");
+        const docQuery = query(collectionRef, where("likes", "array-contains", user));
+        const querySnapshot = await getDocs(docQuery);
+        if (querySnapshot) {
+            let images: any[] = [];
+            querySnapshot.forEach((doc) => {
+                const likedImage = doc.data();
+                images.push(likedImage);
+            });
+            dispatch(setLikedImages(images));
+        };
+    } catch (err) {
         console.log(err);
         // Toast for unable to update like
     } finally {
@@ -64,7 +71,27 @@ export const fetchLikes = (id: string): AppThunk => async (dispatch: Dispatch) =
     }
 };
 
-const updateStoredLikes = async (id: string, action: FieldValue) => {
+const updateImageLikes = async (user: User, imageRef: Image, action: FieldValue) => {
+    try {
+        const docRef = doc(firestore, "images", imageRef.date);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            await updateDoc(docRef, {
+                likes: action
+            });
+        } else {
+            await setDoc(docRef, {
+                ...imageRef,
+                likes: [user]
+            })
+        }
+    } catch (err) {
+        console.log(err)
+        //toast(err.toString());
+    };
+};
+
+const updateUserLikes = async (id: string, action: FieldValue) => {
     try {
         const docRef = doc(firestore, "users", id);
         await updateDoc(docRef, {
@@ -76,24 +103,30 @@ const updateStoredLikes = async (id: string, action: FieldValue) => {
     }
 };
 
-export const toggleLike = (id: string, imageRef: Image, isLiked: boolean): AppThunk => (dispatch: Dispatch) => {
+export const toggleLike = (id: string, userRef: User, imageRef: Image, isLiked: boolean): AppThunk => async (dispatch: Dispatch) => {
     try {
-        // Manage liked photo in database based on current like status
         dispatch(setLoadingLikes(true));
-        updateStoredLikes(id, !isLiked 
-            ?   arrayUnion(imageRef) 
-            :   arrayRemove(imageRef)
-        );
+        // Manage liked photo in database based on current like status
+        Promise.all([
+            updateImageLikes(userRef, imageRef, !isLiked 
+                ?   arrayUnion(userRef) 
+                :   arrayRemove(userRef)
+            ),
+            updateUserLikes(id, !isLiked 
+                ?   arrayUnion(imageRef.date) 
+                :   arrayRemove(imageRef.date)
+            )
+        ])
     } catch (err) {
         console.log(err)
         //toast(err.toString());
     } finally {
         // Update UI based on database change
         if (!isLiked) {
-            dispatch(setLike(imageRef));
+            dispatch(setLike(imageRef.date));
             toast('Photo saved to "liked" collection');
         } else {
-            dispatch(setUnlike(imageRef));
+            dispatch(setUnlike(imageRef.date));
             toast('Photo removed from "liked" collection');
         }
         dispatch(setCount());

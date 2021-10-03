@@ -33,13 +33,13 @@ const likeSlice = createSlice({
             state.data = [];
             state.count = 0;
         },
-        setShorthandLikes: (
+        setLikes: (
             state, 
             { payload }: PayloadAction<string[]>
         ) => {
             state.likes = payload;
         },
-        setLikes: (
+        setLikedImages: (
             state, 
             { payload }: PayloadAction<Image[]>
         ) => {
@@ -47,17 +47,15 @@ const likeSlice = createSlice({
         },
         setLike: (
             state, 
-            { payload }: PayloadAction<Image>
+            { payload }: PayloadAction<string>
         ) => {
-            state.data = [...state.data, payload];
-            state.likes = [...state.likes, payload.date];
+            state.likes = [...state.likes, payload];
         },
         setUnlike: (
             state, 
-            { payload }: PayloadAction<Image>
+            { payload }: PayloadAction<string>
         ) => {
-            state.data = [...state.data.filter(image => image.date !== payload.date)];
-            state.likes = [...state.likes.filter(id => id !== payload.date)];
+            state.likes = [...state.likes.filter(id => id !== payload)];
         },
         setCount: (
             state
@@ -70,8 +68,8 @@ const likeSlice = createSlice({
 export const { 
     setLoadingLikes, 
     setClearLikes,
-    setShorthandLikes, 
     setLikes, 
+    setLikedImages, 
     setLike, 
     setUnlike, 
     setCount 

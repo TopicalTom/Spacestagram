@@ -1,3 +1,3 @@
 export * from './authActions';
-export * from './imagesActions';
+export * from './apiActions';
 export * from './likeActions';

@@ -10,14 +10,12 @@ import Feed from '../../components/Feed';
 import Sidebar from '../../components/Sidebar';
 
 const Likes: FC = () => {
-    const { fetchLikes } = useActions();
+    const { fetchLikedImages } = useActions();
     const { data, isLoadingLikes } = useSelector(likeSelector);
     const { user } = useSelector(authSelector);
 
     useEffect(() => {
-        if (user) {
-            fetchLikes(user.uid);
-        };
+        if (user) { fetchLikedImages(user); };
     }, [user]);
 
     return (
@@ -28,7 +26,7 @@ const Likes: FC = () => {
             />
             <Sidebar 
                 title="Your Likes"
-                action={user ? () => fetchLikes(user.uid) : undefined}>
+                action={user ? () => fetchLikedImages(user) : undefined}>
                 <Container 
                     title="About">
                     <p>Keep track of the images or photographs of our universe that you have previously liked all in one place.</p>

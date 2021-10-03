@@ -1,3 +1,3 @@
 export * from './authReducer';
-export * from './imagesReducer';
+export * from './apiReducer';
 export * from './likeReducer';

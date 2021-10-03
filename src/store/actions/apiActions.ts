@@ -3,9 +3,9 @@ import { Dispatch } from 'redux';
 import { AppThunk } from '../store';
 import { 
     setLoading, 
-    setFetchSuccess,
+    setAPIImages,
     setFetchError
-} from '../reducers/imagesReducer';
+} from '../reducers';
 import { Image } from '../reducers';
 
 const API_URL = 'https://api.nasa.gov/planetary/apod?';
@@ -20,28 +20,20 @@ const fetchFromAPI = async () => {
     }
 };
 
-export const fetchNewAPIImages = (currentImages: Image[]): AppThunk => async (dispatch: Dispatch) => {
+export const fetchAPIImages = (currentImages?: Image[]): AppThunk => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoading(true));
+        // Clears images on initial load or refresh
+        if (!currentImages) {
+            dispatch(setAPIImages([]));
+        }
         const images = await fetchFromAPI();
         if (images) {
-            const newArray: Image[] = [...currentImages, ...images];
-            dispatch(setFetchSuccess(newArray));
-        };
-    } catch (err) {
-        dispatch(setFetchError('There was an issue handling your request, please try again.'));
-    } finally {
-        dispatch(setLoading(false));
-    };
-};
-
-export const fetchAPIImages = (): AppThunk => async (dispatch: Dispatch) => {
-    try {
-        dispatch(setLoading(true));
-        dispatch(setFetchSuccess([]));
-        const images = await fetchFromAPI();
-        if (images) {
-            dispatch(setFetchSuccess(images));
+            // Appends or adds images array depending on existing images
+            const imageArray = currentImages
+                ?   [...currentImages, ...images] 
+                :   images;
+            dispatch(setAPIImages(imageArray));
         };
     } catch (err) {
         dispatch(setFetchError('There was an issue handling your request, please try again.'));

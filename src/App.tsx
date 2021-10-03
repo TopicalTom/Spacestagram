@@ -15,8 +15,14 @@ import Explore from './pages/Explore';
 import Likes from './pages/Likes';
 
 const App: FC = () => {
-    const { fetchShorthandLikes, checkForStoredDetails } = useActions();
-    const { isAuthenticating, user } = useSelector(authSelector);
+    const { 
+        fetchLikes, 
+        checkForStoredDetails 
+    } = useActions();
+    const { 
+        isAuthenticating, 
+        user 
+    } = useSelector(authSelector);
 
     useEffect(() => {
         checkForStoredDetails();
@@ -24,7 +30,7 @@ const App: FC = () => {
 
     useEffect(() => {
         if (user) {
-            fetchShorthandLikes(user.uid);
+            fetchLikes(user.uid);
         }
     }, [user]);
 
