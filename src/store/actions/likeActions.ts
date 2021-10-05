@@ -14,7 +14,7 @@ import {
     query,
     where,
     collection, 
-    getDocs 
+    getDocs
 } from "firebase/firestore";
 import { 
     setLike,

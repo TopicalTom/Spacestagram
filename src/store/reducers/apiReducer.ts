@@ -43,7 +43,8 @@ const apiSlice = createSlice({
             state.data = payload;
         },
         setFetchError: (
-            state, { payload }: PayloadAction<string>
+            state, 
+            { payload }: PayloadAction<string>
         ) => {
             state.error = payload;
         },

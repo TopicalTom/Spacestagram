@@ -138,21 +138,28 @@ From a development standpoint, I want to highlight a few areas of my code that e
 ```javascript
     // Explore/index.tsx (line 13)
     
-    const { fetchAPIImages, fetchNewAPIImages } = useActions();
+    const { fetchAPIImages } = useActions();
 ```
 
 <br />
 
 ```javascript
-    // imagesActions.ts (line 38 - 51)
+    // apiActions.ts (line 23 - 43)
     
-    export const fetchAPIImages = (): AppThunk => async (dispatch: Dispatch) => {
+    export const fetchAPIImages = (currentImages?: Image[]): AppThunk => async (dispatch: Dispatch) => {
         try {
             dispatch(setLoading(true));
-            dispatch(setFetchSuccess([]));
+            // Clears images on initial load or refresh
+            if (!currentImages) {
+                dispatch(setAPIImages([]));
+            }
             const images = await fetchFromAPI();
             if (images) {
-                dispatch(setFetchSuccess(images));
+                // Appends or adds images array depending on existing images
+                const imageArray = currentImages
+                    ?   [...currentImages, ...images] 
+                    :   images;
+                dispatch(setAPIImages(imageArray));
             };
         } catch (err) {
             dispatch(setFetchError('There was an issue handling your request, please try again.'));
@@ -165,10 +172,10 @@ From a development standpoint, I want to highlight a few areas of my code that e
 <br />
 
 ```javascript
-    // imagesActions.ts (line 23 - 45)
+    // apiReducer.ts (line 29 - 52)
     
-    const imagesSlice = createSlice({
-        name: 'images',
+    const apiSlice = createSlice({
+        name: 'api',
         initialState,
         reducers: {
             setLoading: (
@@ -177,14 +184,15 @@ From a development standpoint, I want to highlight a few areas of my code that e
             ) => {
                 state.isLoading = payload;
             },
-            setFetchSuccess: (
+            setAPIImages: (
                 state, 
                 { payload }: PayloadAction<Image[]>
             ) => {
                 state.data = payload;
             },
             setFetchError: (
-                state, { payload }: PayloadAction<string>
+                state, 
+                { payload }: PayloadAction<string>
             ) => {
                 state.error = payload;
             },
@@ -197,7 +205,7 @@ From a development standpoint, I want to highlight a few areas of my code that e
 ```javascript
     // Explore/index.tsx (line 14)
     
-    const { data, isLoading } = useSelector(imageSelector);
+    const { data, isLoading } = useSelector(apiSelector);
 ```
 
 <br />
@@ -207,24 +215,19 @@ From a development standpoint, I want to highlight a few areas of my code that e
 <br />
 
 ```javascript
-    // authActions.ts (line 56 - 78)
+    // authActions.ts (line 67 - 84)
     
     export const login = (): AppThunk => async (dispatch: Dispatch) => {
         try {
             dispatch(setAuthenticating(true));
             // User is redirected to Google Sign in
-            const result = await signInWithPopup(auth, provider);
-            const user = {
-                uid: result.user.uid,
-                displayName: result.user.displayName,
-                photoURL: result.user.photoURL
-            };
+            let userDetails = await googleSignIn();
             // Checks for pre-existing account
-            await checkUserDatabase(user.uid);
+            await checkUserDatabase(userDetails.uid);
             // Stores relevant Auth data
-            if (user) {
-                localStorage.setItem("user", JSON.stringify(user));
-                dispatch(setAuth(user));
+            if (userDetails) {
+                localStorage.setItem("user", JSON.stringify(userDetails));
+                dispatch(setAuth(userDetails));
             }
         } catch (err) {
             dispatch(setAuthError('Unable to login'));
@@ -232,6 +235,22 @@ From a development standpoint, I want to highlight a few areas of my code that e
             dispatch(setAuthenticating(false));
         };
     };
+```
+
+<br />
+
+```javascript
+    // authActions.ts (line 57 - 65)
+    
+    const googleSignIn = async () => {
+        const result = await signInWithPopup(auth, provider);
+        const user = {
+            uid: result.user.uid,
+            displayName: result.user.displayName,
+            photoURL: result.user.photoURL
+        };
+        return user;
+    }
 ```
 
 <br />
@@ -255,7 +274,7 @@ From a development standpoint, I want to highlight a few areas of my code that e
 <br />
 
 ```javascript
-    // authActions.ts (line 26 - 35)
+    // authActions.ts (line 27 - 36)
     
     const createAccount = async (userID: string) => {
         try {
@@ -284,26 +303,32 @@ A user's authentication details are then stored on Firebase as the following:
 <br />
 
 ```javascript
-    // likeActions.ts (line 78 - 101)
+    // likeActions.ts (line 106 - 135)
     
-    export const toggleLike = (id: string, imageRef: Image, isLiked: boolean): AppThunk => (dispatch: Dispatch) => {
+    export const toggleLike = (id: string, userRef: User, imageRef: Image, isLiked: boolean): AppThunk => async (dispatch: Dispatch) => {
         try {
-            // Manage liked photo in database based on current like status
             dispatch(setLoadingLikes(true));
-            updateStoredLikes(id, !isLiked 
-                ?   arrayUnion(imageRef) 
-                :   arrayRemove(imageRef)
-            );
+            // Manage liked photo in database based on current like status
+            Promise.all([
+                updateImageLikes(userRef, imageRef, !isLiked 
+                    ?   arrayUnion(userRef) 
+                    :   arrayRemove(userRef)
+                ),
+                updateUserLikes(id, !isLiked 
+                    ?   arrayUnion(imageRef.date) 
+                    :   arrayRemove(imageRef.date)
+                )
+            ])
         } catch (err) {
             console.log(err)
             //toast(err.toString());
         } finally {
             // Update UI based on database change
             if (!isLiked) {
-                dispatch(setLike(imageRef));
+                dispatch(setLike(imageRef.date));
                 toast('Photo saved to "liked" collection');
             } else {
-                dispatch(setUnlike(imageRef));
+                dispatch(setUnlike(imageRef.date));
                 toast('Photo removed from "liked" collection');
             }
             dispatch(setCount());
@@ -315,9 +340,43 @@ A user's authentication details are then stored on Firebase as the following:
 <br />
 
 ```javascript
-    // likeActions.ts (line 66 - 76)
+    // likeActions.ts (line 74 - 92)
     
-    const updateStoredLikes = async (id: string, action: FieldValue) => {
+    const updateImageLikes = async (user: User, imageRef: Image, action: FieldValue) => {
+        try {
+            const docRef = doc(firestore, "images", imageRef.date);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                await updateDoc(docRef, {
+                    likes: action
+                });
+            } else {
+                await setDoc(docRef, {
+                    ...imageRef,
+                    likes: [user]
+                })
+            }
+        } catch (err) {
+            console.log(err)
+            //toast(err.toString());
+        };
+    };
+```
+
+<br />
+
+An image's full details are then stored in the images collection on Firebase with references values (user id) to a user when liked:
+
+<br />
+
+<a href="https://ibb.co/hMPRk2q"><img src="https://i.ibb.co/b3SgxNf/Image-Database.png" alt="Image-Database" border="0"></a>
+
+<br />
+
+```javascript
+    // likeActions.ts (line 94 - 104)
+    
+    const updateUserLikes = async (id: string, action: FieldValue) => {
         try {
             const docRef = doc(firestore, "users", id);
             await updateDoc(docRef, {
@@ -332,13 +391,11 @@ A user's authentication details are then stored on Firebase as the following:
 
 <br />
 
-An image's full details are then stored by user on Firebase when liked:
+Reference values (date) to liked images are stored by user with the user collection on Firebase when liked:
 
 <br />
 
-<a href="https://ibb.co/pwnLBjn"><img src="https://i.ibb.co/YQbLFBb/Spacestagram-Database.png" alt="Spacestagram-Database" border="0"></a>
-
-> Note: Storing the same image details for each user that likes it is not an optimal solution as the same information would exist in multiple locations. If I were to improve this area I would look into storing the image details under the "images" collection once liked for the first time by a user and then passing a reference to that document as a string value for each subsequent user that added a like. This would make it easier to update image details, as it exists in one place and is just referenced by users, but would be more complex to fetch as I would be running multiple "get" requests for individual image documents when a user visits their likes page. Firebase supports [In Queries](https://firebase.google.com/docs/firestore/query-data/queries#in_and_array-contains-any) but is limited to an array of 10 values so I would have to find a more elegant solution to support this optimization.
+<a href="https://ibb.co/W5bh7fN"><img src="https://i.ibb.co/Jtf18HW/User-Database.png" alt="User-Database" border="0"></a>
 
 <br />
 
